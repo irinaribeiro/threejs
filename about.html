@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>About</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      width: 100vw;
+      height: 100vh;
+      background: url('about_page.png') no-repeat center center fixed;
+      background-size: cover;
+    }
+    #back-btn {
+      position: absolute;
+      left: 50%;
+      top: 210px;
+      transform: translateX(-50%);
+      z-index: 100;
+      background: none;
+      border: none;
+      padding: 0;
+      box-shadow: none;
+      cursor: pointer;
+      display: block;
+      margin-top: 32px;
+    }
+    #back-btn img {
+      height: 64px;
+      width: auto;
+      display: block;
+      background: none;
+      border: none;
+      margin: 0;
+      padding: 0;
+      transition: transform 0.15s;
+    }
+    #back-btn img:hover {
+      transform: scale(1.18);
+    }
+    #back-btn img:active {
+      transform: scale(1.08);
+    }
+  </style>
+</head>
+<body>
+  <a href="game.html" id="back-btn">
+    <img src="back_button.png" alt="Back to Main" />
+  </a>
+</body>
+</html>

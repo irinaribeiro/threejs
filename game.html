@@ -1,0 +1,216 @@
+  <!-- Right side clouds -->
+  <div class="pixel-cloud cloud1" style="top: 220px; right: 80px;">
+    <div class="cloud-part cloud-part1"></div>
+    <div class="cloud-part cloud-part2"></div>
+    <div class="cloud-part cloud-part3"></div>
+  </div>
+  <div class="pixel-cloud cloud2" style="bottom: 180px; right: 120px;">
+    <div class="cloud-part cloud-part1"></div>
+    <div class="cloud-part cloud-part2"></div>
+    <div class="cloud-part cloud-part3"></div>
+  </div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Interactive CV Game</title>
+  <style>
+    /* Pixel cloud styles */
+    .pixel-cloud {
+      position: absolute;
+      z-index: 2;
+      width: 80px;
+      height: 40px;
+      background: none;
+      pointer-events: none;
+    }
+    .pixel-cloud .cloud-part {
+      position: absolute;
+      background: #fff;
+      box-shadow: 0 0 2px #eee;
+      border-radius: 6px;
+    }
+    /* Example pixel cloud shapes */
+    .cloud1 .cloud-part1 { left: 10px; top: 18px; width: 32px; height: 16px; }
+    .cloud1 .cloud-part2 { left: 28px; top: 8px; width: 24px; height: 20px; }
+    .cloud1 .cloud-part3 { left: 48px; top: 18px; width: 20px; height: 14px; }
+    .cloud2 .cloud-part1 { left: 8px; top: 10px; width: 28px; height: 14px; }
+    .cloud2 .cloud-part2 { left: 22px; top: 2px; width: 22px; height: 18px; }
+    .cloud2 .cloud-part3 { left: 38px; top: 12px; width: 18px; height: 10px; }
+    .cloud3 .cloud-part1 { left: 12px; top: 20px; width: 24px; height: 12px; }
+    .cloud3 .cloud-part2 { left: 24px; top: 10px; width: 18px; height: 16px; }
+    .cloud3 .cloud-part3 { left: 36px; top: 18px; width: 16px; height: 10px; }
+    #loader-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      width: 100vw; height: 100vh;
+      background: #222 url('https://cdnjs.cloudflare.com/ajax/libs/timelinejs/2.36.0/css/loading.gif') no-repeat center center;
+      background-size: 80px 80px;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.4s;
+      opacity: 1;
+    }
+    #loader-overlay.fade-out {
+      opacity: 0;
+      pointer-events: none;
+    }
+    #hello-btn img {
+      transition: transform 0.15s;
+    }
+    #hello-btn img:hover {
+      transform: scale(1.08);
+    }
+    body {
+      margin: 0;
+      overflow: hidden;
+      background: #87CEEB; /* Sky blue background */
+    }
+    canvas {
+      display: block;
+    }
+    #microsoft-window {
+      position: fixed;
+      top: 24px;
+      left: auto;
+      right: 24px;
+      width: 700px;
+      z-index: 10;
+      display: none;
+      background: none;
+      box-shadow: none;
+      border-radius: 0;
+      border: none;
+      padding: 0;
+      cursor: grab;
+      user-select: none;
+    }
+  </style>
+  <script src="loader.js"></script>
+</head>
+<body>
+  <div id="loader-overlay"></div>
+  <!-- Pixel clouds -->
+  <div class="pixel-cloud cloud1" style="top: 60px; left: 120px;">
+    <div class="cloud-part cloud-part1"></div>
+    <div class="cloud-part cloud-part2"></div>
+    <div class="cloud-part cloud-part3"></div>
+  </div>
+  <div class="pixel-cloud cloud2" style="top: 140px; left: 400px;">
+    <div class="cloud-part cloud-part1"></div>
+    <div class="cloud-part cloud-part2"></div>
+    <div class="cloud-part cloud-part3"></div>
+  </div>
+  <div class="pixel-cloud cloud3" style="top: 90px; left: 800px;">
+    <div class="cloud-part cloud-part1"></div>
+    <div class="cloud-part cloud-part2"></div>
+    <div class="cloud-part cloud-part3"></div>
+  </div>
+  <!-- Bottom clouds -->
+  <div class="pixel-cloud cloud1" style="bottom: 60px; left: 180px;">
+    <div class="cloud-part cloud-part1"></div>
+    <div class="cloud-part cloud-part2"></div>
+    <div class="cloud-part cloud-part3"></div>
+  </div>
+  <div class="pixel-cloud cloud2" style="bottom: 100px; left: 600px;">
+    <div class="cloud-part cloud-part1"></div>
+    <div class="cloud-part cloud-part2"></div>
+    <div class="cloud-part cloud-part3"></div>
+  </div>
+  <div class="pixel-cloud cloud3" style="bottom: 40px; left: 1000px;">
+    <div class="cloud-part cloud-part1"></div>
+    <div class="cloud-part cloud-part2"></div>
+    <div class="cloud-part cloud-part3"></div>
+  </div>
+  <div id="microsoft-window" style="display:none; position:fixed; top:24px; right:24px; width:480px; z-index:10; background:none; box-shadow:none; border-radius:0; border:none; padding:0; cursor:grab; user-select:none;">
+    <div style="position:relative; width:100%; height:auto;">
+      <img id="microsoft-window-img" src="window_microsoft.png" alt="Microsoft Window" style="width:100%; display:block; pointer-events:none; user-drag:none; -webkit-user-drag:none; margin:0; padding:0; background:none;" />
+      <img id="microsoft-close-btn" src="close_window.png" alt="Close" style="position:absolute; top:6px; right:6px; width:32px; height:32px; cursor:pointer; z-index:11; margin:0; padding:0;" />
+    </div>
+  </div>
+    <a href="index.html" id="hello-btn" style="position:fixed; bottom:24px; right:24px; z-index:100; background:none; border:none; padding:0; box-shadow:none; cursor:pointer; display:block;">
+      <img src="back_arrow.png" alt="Back" style="height:48px; width:auto; display:block; background:none; border:none; margin:0; padding:0;" />
+    </a>
+
+  <div id="olr-window" style="display:none; position:fixed; top:24px; left:24px; width:480px; z-index:10; background:none; box-shadow:none; border-radius:0; border:none; padding:0; cursor:grab; user-select:none;">
+    <div style="position:relative; width:100%; height:auto;">
+      <img id="olr-window-img" src="olr_window.png" alt="OLR Window" style="width:100%; display:block; pointer-events:none; user-drag:none; -webkit-user-drag:none; margin:0; padding:0; background:none;" />
+      <img id="olr-close-btn" src="close_window.png" alt="Close" style="position:absolute; top:6px; right:6px; width:32px; height:32px; cursor:pointer; z-index:11; margin:0; padding:0;" />
+    </div>
+  </div>
+
+  <div id="isep-window" style="display:none; position:fixed; bottom:120px; right:24px; width:480px; z-index:10; background:none; box-shadow:none; border-radius:0; border:none; padding:0; cursor:grab; user-select:none;">
+    <div style="position:relative; width:100%; height:auto;">
+      <img id="isep-window-img" src="isep_window.png" alt="ISEP Window" style="width:100%; display:block; pointer-events:none; user-drag:none; -webkit-user-drag:none; margin:0; padding:0; background:none;" />
+      <img id="isep-close-btn" src="close_window.png" alt="Close" style="position:absolute; top:6px; right:6px; width:32px; height:32px; cursor:pointer; z-index:11; margin:0; padding:0;" />
+    </div>
+  </div>
+
+  <div id="oracle-window" style="display:none; position:fixed; bottom:24px; left:24px; width:480px; z-index:10; background:none; box-shadow:none; border-radius:0; border:none; padding:0; cursor:grab; user-select:none;">
+    <div style="position:relative; width:100%; height:auto;">
+      <img id="oracle-window-img" src="oracle_window.png" alt="Oracle Window" style="width:100%; display:block; pointer-events:none; user-drag:none; -webkit-user-drag:none; margin:0; padding:0; background:none;" />
+      <img id="oracle-close-btn" src="close_window.png" alt="Close" style="position:absolute; top:6px; right:6px; width:32px; height:32px; cursor:pointer; z-index:11; margin:0; padding:0;" />
+    </div>
+  </div>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="main.js"></script>
+  <script>
+    // Helper for draggable windows with close button
+    function makeDraggable(winId, closeId) {
+      const win = document.getElementById(winId);
+      const closeBtn = document.getElementById(closeId);
+      let isDragging = false;
+      let dragOffsetX = 0;
+      let dragOffsetY = 0;
+
+      win.addEventListener('mousedown', function(e) {
+        if (e.target === closeBtn) return;
+        isDragging = true;
+        win.style.cursor = 'grabbing';
+        if (win.style.right && win.style.left === '') {
+          win.style.left = (window.innerWidth - win.offsetWidth - parseInt(win.style.right)) + 'px';
+          win.style.right = '';
+        }
+        if (win.style.bottom && win.style.top === '') {
+          win.style.top = (window.innerHeight - win.offsetHeight - parseInt(win.style.bottom)) + 'px';
+          win.style.bottom = '';
+        }
+        dragOffsetX = e.clientX - win.offsetLeft;
+        dragOffsetY = e.clientY - win.offsetTop;
+        e.preventDefault();
+      });
+
+      document.addEventListener('mousemove', function(e) {
+        if (isDragging) {
+          let newLeft = e.clientX - dragOffsetX;
+          let newTop = e.clientY - dragOffsetY;
+          newLeft = Math.max(0, Math.min(window.innerWidth - win.offsetWidth, newLeft));
+          newTop = Math.max(0, Math.min(window.innerHeight - win.offsetHeight, newTop));
+          win.style.left = newLeft + 'px';
+          win.style.top = newTop + 'px';
+        }
+      });
+
+      document.addEventListener('mouseup', function() {
+        if (isDragging) {
+          isDragging = false;
+          win.style.cursor = 'grab';
+        }
+      });
+
+      closeBtn.addEventListener('click', function(e) {
+        win.style.display = 'none';
+        e.stopPropagation();
+      });
+    }
+
+    makeDraggable('microsoft-window', 'microsoft-close-btn');
+    makeDraggable('olr-window', 'olr-close-btn');
+    makeDraggable('isep-window', 'isep-close-btn');
+    makeDraggable('oracle-window', 'oracle-close-btn');
+  </script>
+</body>
+</html>
